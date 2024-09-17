@@ -5,74 +5,196 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        /* Estilo do corpo */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
         }
+
+        /* Estilo do contêiner principal */
         .container {
             background-color: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            width: 300px;
-            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
+
+        /* Estilo do título */
         h1 {
+            text-align: center;
             margin-bottom: 20px;
             color: #333;
         }
+
+        /* Estilo do formulário */
+        form {
+            width: 100%;
+        }
+
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-top: 15px;
             color: #555;
+            font-weight: bold;
         }
-        input[type="text"], input[type="password"] {
-            width: calc(100% - 20px);
+
+        input {
+            margin-top: 5px;
             padding: 10px;
-            margin-bottom: 15px;
+            width: 100%;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 5px;
             box-sizing: border-box;
+            font-size: 16px;
+            background-color: #f9f9f9;
+            transition: border 0.3s;
         }
+
+        input:focus {
+            border-color: #007bff;
+            background-color: #fff;
+        }
+
+        /* Estilo dos botões */
         button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
             background-color: #007bff;
-            color: #fff;
+            color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin: 5px;
+            transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
+        /* Estilo do botão de voltar */
         .back-button {
-            background-color: #6c757d;
+            background-color: #28a745;
         }
+
         .back-button:hover {
-            background-color: #5a6268;
+            background-color: #218838;
+        }
+
+        /* Estilo do modal */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+            max-width: 400px;
+            border-radius: 5px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Login</h1>
-        <form action="/login" method="POST">
+        <form id="login-form" action="/login" method="POST">
             <label for="name">Nome:</label>
             <input type="text" id="name" name="name" required>
-            <br>
             <label for="password">Senha:</label>
             <input type="password" id="password" name="password" required>
-            <br>
             <button type="submit">Login</button>
         </form>
         <button class="back-button" onclick="window.location.href='index.html'">Voltar para Cadastro</button>
     </div>
+
+    <!-- Modal -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modal-message">Nome ou senha incorretos!</p>
+        </div>
+    </div>
+
+    <script>
+        // Função para mostrar o modal
+        function showModal(message) {
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('errorModal').style.display = 'block';
+        }
+
+        // Fecha o modal quando o usuário clica no (x)
+        document.querySelector('.close').onclick = function() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        // Fecha o modal se o usuário clicar fora da área do modal
+        window.onclick = function(event) {
+            if (event.target === document.getElementById('errorModal')) {
+                document.getElementById('errorModal').style.display = 'none';
+            }
+        }
+
+        // Manipulador de envio do formulário
+        document.getElementById('login-form').onsubmit = function(event) {
+            event.preventDefault(); // Previne o envio padrão do formulário
+
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams(new FormData(this)).toString()
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/users.html'; // Redireciona para a página de usuários
+                } else {
+                    return response.text().then(text => showModal(text));
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao tentar fazer login', error);
+                showModal('Erro ao tentar fazer login');
+            });
+        }
+    </script>
 </body>
 </html>
