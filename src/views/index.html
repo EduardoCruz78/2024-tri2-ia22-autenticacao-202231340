@@ -4,147 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro</title>
-    <style>
-        /* Estilo do corpo */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #121212; /* Fundo preto */
-            color: #E0E0E0; /* Texto branco */
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            flex-direction: column;
-        }
-
-        /* Estilo do contêiner principal */
-        .container {
-            background-color: #1E1E1E; /* Cinza escuro */
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Estilo do título */
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #F5F5F5; /* Branco */
-        }
-
-        /* Estilo do formulário */
-        form {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-top: 15px;
-            color: #CCCCCC; /* Cinza claro */
-            font-weight: bold;
-        }
-
-        input {
-            margin-top: 5px;
-            padding: 10px;
-            width: 100%;
-            border: 1px solid #444444; /* Cinza escuro */
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 16px;
-            background-color: #2E2E2E; /* Cinza médio */
-            color: #E0E0E0; /* Texto branco */
-            transition: border 0.3s;
-        }
-
-        input:focus {
-            border-color: #BB86FC; /* Roxo claro */
-            background-color: #3E3E3E; /* Cinza escuro */
-        }
-
-        /* Estilo dos botões */
-        button {
-            margin-top: 20px;
-            padding: 12px;
-            width: 100%;
-            background-color: #BB86FC; /* Roxo claro */
-            color: #121212; /* Preto */
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        button:hover {
-            background-color: #9C67E6; /* Roxo escuro */
-        }
-
-        /* Estilo do botão de login */
-        .login-btn {
-            margin-top: 10px;
-            background-color: #03DAC6; /* Verde */
-            color: #121212; /* Preto */
-            padding: 12px;
-            width: 100%;
-            border-radius: 5px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
-
-        .login-btn:hover {
-            background-color: #00BFA5; /* Verde escuro */
-        }
-
-        /* Estilo do modal */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.7); /* Fundo preto com opacidade */
-        }
-
-        .modal-content {
-            background-color: #1E1E1E; /* Cinza escuro */
-            color: #E0E0E0; /* Texto branco */
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 400px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .close {
-            color: #888; /* Cinza claro */
-            float: right;
-            font-size: 24px;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #E0E0E0; /* Texto branco */
-            text-decoration: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="assets/index.css">
 </head>
-
 <body>
     <div class="container">
         <h1>Cadastro</h1>
@@ -163,6 +24,9 @@
 
         <!-- Botão para login -->
         <button class="login-btn" onclick="window.location.href='login.html'">Já possui uma conta?</button>
+
+        <!-- Botão para acessar a página pública -->
+        <button class="public-btn" onclick="window.location.href='acesso-publico.html'">Ir para a página pública</button>
     </div>
 
     <!-- Modal (popup) -->
@@ -173,56 +37,6 @@
         </div>
     </div>
 
-    <script>
-        document.getElementById('register-form').addEventListener('submit', async function (event) {
-            event.preventDefault();
-
-            const formData = new FormData(this);
-            const data = {
-                name: formData.get('name'),
-                email: formData.get('email'),
-                password: formData.get('password')
-            };
-
-            try {
-                const response = await fetch('/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                const modal = document.getElementById("popupModal");
-                const modalMessage = document.getElementById("modalMessage");
-                const closeModal = document.getElementsByClassName("close")[0];
-
-                if (response.status === 201) {
-                    modalMessage.textContent = 'Usuário cadastrado com sucesso!';
-                    this.reset();
-                } else {
-                    const errorText = await response.text();
-                    modalMessage.textContent = errorText;
-                }
-
-                // Exibir o popup
-                modal.style.display = "block";
-
-                // Fechar o popup ao clicar no "X"
-                closeModal.onclick = function () {
-                    modal.style.display = "none";
-                };
-
-                // Fechar o popup ao clicar fora dele
-                window.onclick = function (event) {
-                    if (event.target === modal) {
-                        modal.style.display = "none";
-                    }
-                };
-
-            } catch (error) {
-                alert('Erro na requisição. Verifique sua conexão.');
-            }
-        });
-    </script>
+    <script src="assets/index.js"></script>
 </body>
-
 </html>
