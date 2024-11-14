@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmes Inseridos</title>
+    <link rel="stylesheet" href="assets/acesso-privado.css">
+</head>
+<body>
+    <h1>Filmes Inseridos</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Filme</th>
+                    <th>Usuário</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="filmes-lista">
+                <!-- Filmes serão inseridos aqui dinamicamente -->
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button type="button" onclick="window.location.href='/inserir-filmes'">Inserir Novo Filme</button>
+            <button type="button" onclick="window.location.href='/login'">Logout</button>
+        </div>
+    </div>
+    
+    <script src="assets/acesso-privado.js"></script>
+</body>
+</html>
