@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmes Inseridos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #444;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+        }
+        tr:nth-child(even) {
+            background-color: #222;
+        }
+        button {
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #008cba;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005f5f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Filmes Inseridos</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Filme</th>
+                <th>Usuário</th>
+            </tr>
+        </thead>
+        <tbody id="filmes-lista">
+            <!-- Filmes serão inseridos aqui dinamicamente -->
+        </tbody>
+    </table>
+    <button onclick="window.location.href='/inserir-filmes'">Inserir Novo Filme</button>
+    <button onclick="window.location.href='/login'">Logout</button>
+
+    <script>
+        // Fazer a requisição para obter a lista de filmes
+        fetch('/mostrar-filmes')
+            .then(response => response.json())
+            .then(data => {
+                const tabela = document.getElementById('filmes-lista');
+                data.forEach(filme => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<td>${filme.filme}</td><td>${filme.usuario}</td>`;
+                    tabela.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Erro ao carregar filmes:', error));
+    </script>
+</body>
+</html>

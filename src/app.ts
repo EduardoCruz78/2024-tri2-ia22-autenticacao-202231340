@@ -170,6 +170,42 @@ app.get('/api/users', requireLogin, async (req: Request, res: Response) => {
     }
 });
 
+// Nova rota para a página de inserção de filmes
+app.get('/inserir-filmes', requireLogin, (req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, 'views', 'inserir-filmes.html'));
+});
+
+// Rota para inserir um filme no banco de dados
+app.post('/inserir-filmes', requireLogin, async (req: Request, res: Response) => {
+    const { filme } = req.body;
+    const userId = req.session.userId; // Pegando o ID do usuário logado
+
+    try {
+        const db = await dbPromise;
+        await db.run('INSERT INTO filmes (nome, user_id) VALUES (?, ?)', [filme, userId]);
+        res.status(201).send('Filme inserido com sucesso!');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao inserir o filme');
+    }
+});
+
+// Nova rota para exibir filmes
+app.get('/mostrar-filmes', requireLogin, async (req: Request, res: Response) => {
+    try {
+        const db = await dbPromise;
+        const filmes = await db.all(`
+            SELECT filmes.nome AS filme, users.name AS usuario
+            FROM filmes
+            JOIN users ON filmes.user_id = users.id
+        `);
+        res.json(filmes); // Envia a lista de filmes e usuários como JSON
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Erro ao buscar filmes');
+    }
+});
+
 // Configuração da porta do servidor
 const port = 3000;
 app.listen(port, () => {
