@@ -7,8 +7,28 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #121212;
-            color: #f5f5f5;
+            background-color: #121212; /* Fundo preto */
+            color: #E0E0E0; /* Texto branco */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            color: #F5F5F5; /* Branco */
+            margin-bottom: 20px;
+        }
+        .table-container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #1E1E1E; /* Cinza escuro */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
         }
         table {
             width: 100%;
@@ -16,46 +36,59 @@
             margin: 20px 0;
         }
         table, th, td {
-            border: 1px solid #444;
+            border: 1px solid #444; /* Borda cinza escura */
         }
         th, td {
             padding: 10px;
             text-align: left;
+            color: #E0E0E0; /* Texto branco */
         }
         th {
-            background-color: #333;
+            background-color: #333; /* Cinza mais escuro */
         }
         tr:nth-child(even) {
-            background-color: #222;
+            background-color: #2E2E2E; /* Cinza médio */
         }
         button {
-            margin: 20px 0;
+            margin: 10px 0;
             padding: 10px 20px;
-            background-color: #008cba;
-            color: white;
+            background-color: #BB86FC; /* Roxo claro */
+            color: #121212; /* Preto */
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #005f5f;
+            background-color: #9C67E6; /* Roxo escuro */
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
         }
     </style>
 </head>
 <body>
     <h1>Filmes Inseridos</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Filme</th>
-                <th>Usuário</th>
-            </tr>
-        </thead>
-        <tbody id="filmes-lista">
-            <!-- Filmes serão inseridos aqui dinamicamente -->
-        </tbody>
-    </table>
-    <button onclick="window.location.href='/inserir-filmes'">Inserir Novo Filme</button>
-    <button onclick="window.location.href='/login'">Logout</button>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Filme</th>
+                    <th>Usuário</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="filmes-lista">
+                <!-- Filmes serão inseridos aqui dinamicamente -->
+            </tbody>
+        </table>
+        <div class="button-container">
+            <button type="button" onclick="window.location.href='/inserir-filmes'">Inserir Novo Filme</button>
+            <button type="button" onclick="window.location.href='/login'">Logout</button>
+        </div>
+    </div>
 
     <script>
         // Fazer a requisição para obter a lista de filmes
@@ -64,12 +97,46 @@
             .then(data => {
                 const tabela = document.getElementById('filmes-lista');
                 data.forEach(filme => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `<td>${filme.filme}</td><td>${filme.usuario}</td>`;
-                    tabela.appendChild(row);
+                    // Verifique se cada filme tem um id
+                    if (filme.id) {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${filme.filme}</td>
+                            <td>${filme.usuario}</td>
+                            <td>
+                                <form action="/delete-filme/${filme.id}" method="POST" style="display:inline;" onsubmit="return handleDelete(event, ${filme.id})">
+                                    <button type="submit">Excluir</button>
+                                </form>
+                            </td>
+                        `;
+                        tabela.appendChild(row);
+                    } else {
+                        console.error('Filme sem ID:', filme);
+                    }
                 });
             })
             .catch(error => console.error('Erro ao carregar filmes:', error));
+
+        // Função para deletar um filme
+        function handleDelete(event, filmeId) {
+            event.preventDefault();
+            fetch(`/delete-filme/${filmeId}`, {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.status === 403) {
+                    alert('Acesso negado!');
+                } else if (response.ok) {
+                    location.reload(); // Recarregar a página se a exclusão for bem-sucedida
+                } else {
+                    alert('Erro ao tentar excluir o filme.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao tentar excluir filme:', error);
+                alert('Erro ao tentar excluir o filme.');
+            });
+        }
     </script>
 </body>
 </html>

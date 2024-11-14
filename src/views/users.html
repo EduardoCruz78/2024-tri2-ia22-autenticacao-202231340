@@ -8,7 +8,8 @@
         /* Estilo do corpo */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #121212; /* Fundo preto */
+            color: #E0E0E0; /* Texto branco */
             margin: 0;
             padding: 0;
             display: flex;
@@ -16,88 +17,89 @@
             align-items: center;
             height: 100vh;
         }
-
+    
         /* Estilo do título */
         h1 {
             text-align: center;
-            color: #333;
+            color: #F5F5F5; /* Branco */
             margin-bottom: 20px;
         }
-
+    
         /* Estilo do contêiner */
         .center {
-            background-color: #fff;
+            background-color: #1E1E1E; /* Cinza escuro */
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Sombra */
             width: 100%;
             max-width: 600px;
             text-align: center;
         }
-
+    
         /* Estilo da tabela */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
         }
-
+    
         th, td {
             padding: 12px;
-            border: 1px solid #ddd;
+            border: 1px solid #444; /* Borda cinza escura */
+            color: #E0E0E0; /* Texto branco */
         }
-
+    
         th {
-            background-color: #f2f2f2;
+            background-color: #333; /* Cinza mais escuro */
             text-align: left;
         }
-
+    
         tr:nth-child(even) {
-            background-color: #f9f9f9;
+            background-color: #2E2E2E; /* Cinza médio */
         }
-
+    
         /* Estilo dos botões */
         button {
-            background-color: #007bff;
-            color: #fff;
+            background-color: #BB86FC; /* Roxo claro */
+            color: #121212; /* Preto */
             border: none;
             padding: 8px 12px;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
+    
         button:hover {
-            background-color: #0056b3;
+            background-color: #9C67E6; /* Roxo escuro */
         }
-
+    
         /* Estilo do botão de voltar */
         .back-btn {
             display: inline-block;
-            background-color: #28a745;
+            background-color: #28a745; /* Verde */
             color: white;
             padding: 10px 15px;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s;
         }
-
+    
         .back-btn:hover {
             background-color: #218838;
         }
-
+    
         /* Ajustes para responsividade */
         @media (max-width: 600px) {
             .center {
                 padding: 15px;
                 width: 95%;
             }
-
+    
             table, th, td {
                 font-size: 14px;
             }
         }
-
+    
         /* Estilo do modal */
         .modal {
             display: none; /* Escondido por padrão */
@@ -108,12 +110,11 @@
             width: 100%;
             height: 100%;
             overflow: auto;
-            background-color: rgb(0,0,0); /* Fundo preto */
-            background-color: rgba(0,0,0,0.4); /* Fundo preto com opacidade */
+            background-color: rgba(0, 0, 0, 0.4); /* Fundo preto com opacidade */
         }
-
+    
         .modal-content {
-            background-color: #fefefe;
+            background-color: #1E1E1E; /* Cinza escuro */
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #888;
@@ -122,21 +123,22 @@
             border-radius: 5px;
             text-align: center;
         }
-
+    
         .close {
             color: #aaa;
             float: right;
             font-size: 28px;
             font-weight: bold;
         }
-
+    
         .close:hover,
         .close:focus {
-            color: black;
+            color: white;
             text-decoration: none;
             cursor: pointer;
         }
     </style>
+    
 </head>
 <body>
     <div class="center">

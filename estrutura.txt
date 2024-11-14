@@ -1,0 +1,24 @@
+.
+├── README.md
+├── database.db
+├── estrutura.txt
+├── package-lock.json
+├── package.json
+├── src
+│   ├── app.ts
+│   ├── database.db
+│   ├── database.ts
+│   ├── types
+│   │   └── express-session.d.ts
+│   ├── types.d.ts
+│   ├── types.ts
+│   └── views
+│       ├── atualizar.html
+│       ├── index.html
+│       ├── inserir-filmes.html
+│       ├── login.html
+│       ├── movies.html
+│       └── users.html
+└── tsconfig.json
+
+3 directories, 18 files

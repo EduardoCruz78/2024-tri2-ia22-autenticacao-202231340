@@ -29,5 +29,5 @@ export async function createTable() {
       user_id INTEGER,
       FOREIGN KEY (user_id) REFERENCES users (id)
     );
-  `);
+`);
 }
